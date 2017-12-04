@@ -1,0 +1,11 @@
+[Unit]
+Description=ATD daemon
+
+[Service]
+Type=simple
+PIDFile=/home/student/task3.pid
+ExecStart=/home/task3.py
+ExecStop=/bin/kill -9 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
