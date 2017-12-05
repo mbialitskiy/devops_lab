@@ -1,9 +1,10 @@
 #!/bin/python
 
-import os
+
 import ConfigParser
-import json
 import datetime
+import json
+import os
 from time import sleep
 import psutil
 
@@ -24,9 +25,9 @@ def create_settings_file():
         elif log_interval.isdigit():
             break
     settings = file('settings', "w")
-    settings.write("[main]\n")
-    settings.write("format = {0}\n".format(log_format))
-    settings.write("interval = {0}\n".format(log_interval))
+    settings.writelines("[main]")
+    settings.writelines("format = {0}".format(log_format))
+    settings.writelines("interval = {0}".format(log_interval))
     settings.close()
 
 
@@ -43,7 +44,7 @@ def read_settings():
 
 
 def make_human(item):
-    return str(int(item) / float(8*1024**2)) + " Mb"
+    return str(int(item) >> 20) + "Mb"
 
 
 def gen_key_val(dict_item):
