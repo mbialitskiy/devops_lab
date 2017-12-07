@@ -17,19 +17,29 @@ import base64
 import ConfigParser
 import datetime
 import getopt
+from getpass import getpass
 import json
 import requests
 from requests.auth import HTTPBasicAuth
 from sys import argv
 
 
-
 def get_credentials():
     config = ConfigParser.ConfigParser()
     config.read("settings")
-    user = config.get('main', 'login')
-    password = config.get('main', 'password')
-    return base64.b64decode(user), base64.b64decode(password)
+    if config.has_option('main', 'login'):
+        user = config.get('main', 'login')
+        password = config.get('main', 'password')
+        return base64.b64decode(user), base64.b64decode(password)
+    else:
+        print "Yoy need valid credentials to access GutHub."
+        user = raw_input("Please, input your github login: ")
+        password = getpass("Please, input you password: ")
+        settings = file("settings", "a")
+        settings.write('\n'+'login = ' + base64.b64encode(user)+'\n')
+        settings.write('password = ' + base64.b64encode(password)+'\n')
+        settings.close()
+        return user, password
 
 
 def get_labels():
