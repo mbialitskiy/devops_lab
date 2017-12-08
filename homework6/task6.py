@@ -94,7 +94,9 @@ def get_system_python_info():
                     if os.path.isfile('/usr/bin/pip'):
                         pip_path = '/usr/bin/pip'
                         sys_pip_packages = get_site_packages(pip_path)
-                return {'version': python_version, 'python_local': where_is_python, 'site-packages' : sys_pip_packages }
+                    else:
+                        sys_pip_packages = {}
+                return {'version': python_version, 'python_local': where_is_python, 'site-packages': sys_pip_packages }
 
 
 if __name__ == "__main__":
