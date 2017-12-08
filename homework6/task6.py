@@ -97,30 +97,31 @@ def get_system_python_info():
                 return {'version': python_version, 'python_local': where_is_python, 'site-packages' : sys_pip_packages }
 
 
-my_pyvenv = found_dirs_with_pyenv()
-versions = get_python_versions(my_pyvenv)
-versions_plus_params = {}
-for user in versions:
-    temp_list = []
-    for item in versions.values():
-        for ver in item:
-            item = {ver: get_info_about_version(user, ver)}
-            temp_list.append(item)
-    versions_plus_params.update({user: temp_list})
-versions_plus_params.update({'system_python':get_system_python_info()})
-try:
-    json_file = file('python.json', 'w')
-    json_file.write(json.dumps(versions_plus_params))
-except Exception as e:
-    print "ERROR writing to json - {0}".format(e.message)
-else:
-    json_file.close()
+if __name__ == "__main__":
+    my_pyvenv = found_dirs_with_pyenv()
+    versions = get_python_versions(my_pyvenv)
+    versions_plus_params = {}
+    for user in versions:
+        temp_list = []
+        for item in versions.values():
+            for ver in item:
+                item = {ver: get_info_about_version(user, ver)}
+                temp_list.append(item)
+        versions_plus_params.update({user: temp_list})
+    versions_plus_params.update({'system_python':get_system_python_info()})
+    try:
+        json_file = file('python.json', 'w')
+        json_file.write(json.dumps(versions_plus_params))
+    except Exception as e:
+        print "ERROR writing to json - {0}".format(e.message)
+    else:
+        json_file.close()
 
-try:
-    import yaml
-except Exception as e:
-    print "To export to yaml please install pyyaml lib"
-else:
-    yaml_file = file('python.yaml', 'w')
-    yaml.dump(versions_plus_params, yaml_file, default_flow_style=False)
-    yaml_file.close()
+    try:
+        import yaml
+    except Exception as e:
+        print "To export to yaml please install pyyaml lib"
+    else:
+        yaml_file = file('python.yaml', 'w')
+        yaml.dump(versions_plus_params, yaml_file, default_flow_style=False)
+        yaml_file.close()
